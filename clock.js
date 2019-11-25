@@ -14,5 +14,7 @@ const testElement = (
     </div>
 );
 
-ReactDOM.render(testElement, document.getElementById('container'));
-ReactDOM.render(<MyClass />, document.getElementById('test'));
+function initClocks() {
+    ReactDOM.render(testElement, document.getElementById('container'));
+    ReactDOM.render(<MyClass />, document.getElementById('test'));
+}
