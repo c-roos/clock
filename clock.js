@@ -1,3 +1,5 @@
+const testVar = 'Hello'
+
 class MyClass extends React.Component {
     render() {
         return (
