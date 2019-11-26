@@ -63,7 +63,7 @@ function buildClock(results, status) {
                 console.log(tzdata);
                 if (tzdata.status == 'OK') {
                     tztime = new Date().getTime() + (tzdata.dstOffset + tzdata.rawOffset) * 1000;
-                    console.log(new Date(tztime).toLocalString());
+                    console.log(new Date(tztime).toLocaleString());
                 }
             }
         };
