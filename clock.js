@@ -60,7 +60,7 @@ function buildClock(results, status) {
             console.log(xhr.status);
             if (xhr.status === 200) {
                 var tzdata = JSON.parse(xhr.responseText);
-                console.log(tzdata.status);
+                console.log(tzdata);
                 if (tzdata.status == 'OK') {
                     tztime = new Date().getTime() + (tzdata.dstOffset + tzdata.rawOffset) * 1000;
                     console.log(new Date(tztime).toLocalString());
