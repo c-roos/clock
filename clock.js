@@ -7,6 +7,8 @@ function _possibleConstructorReturn(self, call) { if (!self) { throw new Referen
 function _inherits(subClass, superClass) { if (typeof superClass !== "function" && superClass !== null) { throw new TypeError("Super expression must either be null or a function, not " + typeof superClass); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, enumerable: false, writable: true, configurable: true } }); if (superClass) Object.setPrototypeOf ? Object.setPrototypeOf(subClass, superClass) : subClass.__proto__ = superClass; }
 
 var testVar = 'Hello';
+var key = 'AIzaSyDfg1yJ2wwN2kucPfECfwECosbpp9rHG6w';
+var geocoder;
 
 var MyClass = function (_React$Component) {
     _inherits(MyClass, _React$Component);
@@ -45,7 +47,52 @@ var testElement = React.createElement(
     )
 );
 
+function buildClock(results, status) {
+    if (status == 'OK') {
+        var loc = results[0].geometry.location.toString();
+        var timestamp = Math.round(new Date().getTime() / 1000);
+        var tzcall = 'https://maps.googleapis.com/maps/api/timezone/json?location=' + loc + '&timestamp=' + timestamp + '&key=' + key;
+
+        var xhr = new XMLHttpRequest();
+        xhr.open('GET', tzcall);
+        xhr.onload = function () {
+            if (xhr.status === 200) {
+                var tzdata = JSON.parse(xhr.responseText);
+                if (tzdata.status == 'OK') {
+                    tztime = new Date().getTime() + (tzdata.dstOffset + tzdata.rawOffset) * 1000;
+                    console.log(new Date(tztime).toLocalString());
+                }
+            }
+        };
+        xhr.send();
+    }
+}
+
+function codeAddress(address) {
+    geocoder.geocode({ 'address': address }, buildClock);
+}
+
+var Clock = function (_React$Component2) {
+    _inherits(Clock, _React$Component2);
+
+    function Clock() {
+        _classCallCheck(this, Clock);
+
+        return _possibleConstructorReturn(this, (Clock.__proto__ || Object.getPrototypeOf(Clock)).apply(this, arguments));
+    }
+
+    _createClass(Clock, [{
+        key: 'render',
+        value: function render() {
+            return React.createElement('div', null);
+        }
+    }]);
+
+    return Clock;
+}(React.Component);
+
 function initClocks() {
-    ReactDOM.render(testElement, document.getElementById('container'));
-    ReactDOM.render(React.createElement(MyClass, null), document.getElementById('test'));
+    geocoder = new google.maps.Geocoder();
+    codeAddress('Mountain View, CA');
+    //ReactDOM.render(<Clock />, document.getElementById('container'));
 }
