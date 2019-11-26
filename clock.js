@@ -49,7 +49,7 @@ var testElement = React.createElement(
 
 function buildClock(results, status) {
     if (status == 'OK') {
-        var loc = results[0].geometry.location.toString();
+        var loc = results[0].geometry.location.toUrlValue();
         console.log(loc);
         var timestamp = Math.round(new Date().getTime() / 1000);
         var tzcall = 'https://maps.googleapis.com/maps/api/timezone/json?location=' + loc + '&timestamp=' + timestamp + '&key=' + key;
@@ -65,7 +65,7 @@ function buildClock(results, status) {
                 }
             }
         };
-        //xhr.send()
+        xhr.send();
     }
 }
 
