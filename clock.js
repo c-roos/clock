@@ -6,46 +6,8 @@ function _possibleConstructorReturn(self, call) { if (!self) { throw new Referen
 
 function _inherits(subClass, superClass) { if (typeof superClass !== "function" && superClass !== null) { throw new TypeError("Super expression must either be null or a function, not " + typeof superClass); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, enumerable: false, writable: true, configurable: true } }); if (superClass) Object.setPrototypeOf ? Object.setPrototypeOf(subClass, superClass) : subClass.__proto__ = superClass; }
 
-var testVar = 'Hello';
 var key = 'AIzaSyDfg1yJ2wwN2kucPfECfwECosbpp9rHG6w';
 var geocoder;
-
-var MyClass = function (_React$Component) {
-    _inherits(MyClass, _React$Component);
-
-    function MyClass() {
-        _classCallCheck(this, MyClass);
-
-        return _possibleConstructorReturn(this, (MyClass.__proto__ || Object.getPrototypeOf(MyClass)).apply(this, arguments));
-    }
-
-    _createClass(MyClass, [{
-        key: 'render',
-        value: function render() {
-            return React.createElement(
-                'div',
-                null,
-                React.createElement(
-                    'h1',
-                    null,
-                    'Test Component'
-                )
-            );
-        }
-    }]);
-
-    return MyClass;
-}(React.Component);
-
-var testElement = React.createElement(
-    'div',
-    { id: 'test' },
-    React.createElement(
-        'p',
-        null,
-        'Hello'
-    )
-);
 
 function buildClock(results, status) {
     if (status == 'OK') {
@@ -76,27 +38,89 @@ function codeAddress(address) {
     geocoder.geocode({ 'address': address }, buildClock);
 }
 
-var Clock = function (_React$Component2) {
-    _inherits(Clock, _React$Component2);
+function initClocks() {
+    console.log('initClocks');
+    //geocoder = new google.maps.Geocoder();
+    //codeAddress('Mountain View, CA');
+    //ReactDOM.render(<Clock />, document.getElementById('container'));
+}
 
-    function Clock() {
-        _classCallCheck(this, Clock);
+var Foo = function (_React$Component) {
+    _inherits(Foo, _React$Component);
 
-        return _possibleConstructorReturn(this, (Clock.__proto__ || Object.getPrototypeOf(Clock)).apply(this, arguments));
+    function Foo() {
+        _classCallCheck(this, Foo);
+
+        return _possibleConstructorReturn(this, (Foo.__proto__ || Object.getPrototypeOf(Foo)).apply(this, arguments));
     }
 
-    _createClass(Clock, [{
+    _createClass(Foo, [{
         key: 'render',
         value: function render() {
-            return React.createElement('div', null);
+            var _this2 = this;
+
+            return React.createElement(
+                'div',
+                { onClick: function onClick() {
+                        return _this2.props.removeEntry(_this2.props.id);
+                    } },
+                this.props.message
+            );
         }
     }]);
 
-    return Clock;
+    return Foo;
 }(React.Component);
 
-function initClocks() {
-    geocoder = new google.maps.Geocoder();
-    codeAddress('Mountain View, CA');
-    //ReactDOM.render(<Clock />, document.getElementById('container'));
+var Test = function (_React$Component2) {
+    _inherits(Test, _React$Component2);
+
+    function Test(props) {
+        _classCallCheck(this, Test);
+
+        var _this3 = _possibleConstructorReturn(this, (Test.__proto__ || Object.getPrototypeOf(Test)).call(this, props));
+
+        _this3.state = {
+            entries: [{ id: 1, message: "Hi" }, { id: 2, message: "Bye" }]
+        };
+        return _this3;
+    }
+
+    _createClass(Test, [{
+        key: 'removeEntry',
+        value: function removeEntry(id) {
+            var index = this.state.entries.findIndex(function (e) {
+                return e.id === id;
+            });
+            var tempArray = this.state.entries;
+            tempArray.splice(index, 1);
+            this.setState({ entries: tempArray });
+        }
+    }, {
+        key: 'render',
+        value: function render() {
+            var _this4 = this;
+
+            return React.createElement(
+                'div',
+                null,
+                this.state.entries.map(function (e) {
+                    return React.createElement(Foo, { key: e.id, id: e.id, message: e.message, removeEntry: _this4.removeEntry.bind(_this4) });
+                })
+            );
+        }
+    }]);
+
+    return Test;
+}(React.Component);
+
+var click = 2;
+
+var r = ReactDOM.render(React.createElement(Test, null), document.getElementById('container'));
+
+function addThing() {
+    click += 1;
+    var tempArray = r.state.entries;
+    tempArray.push({ id: click, message: "testMessage" });
+    r.setState({ entries: tempArray });
 }
