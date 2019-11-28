@@ -45,8 +45,49 @@ function initClocks() {
     //ReactDOM.render(<Clock />, document.getElementById('container'));
 }
 
-var Foo = function (_React$Component) {
-    _inherits(Foo, _React$Component);
+var Clock = function (_React$Component) {
+    _inherits(Clock, _React$Component);
+
+    function Clock() {
+        _classCallCheck(this, Clock);
+
+        return _possibleConstructorReturn(this, (Clock.__proto__ || Object.getPrototypeOf(Clock)).apply(this, arguments));
+    }
+
+    _createClass(Clock, [{
+        key: 'render',
+        value: function render() {
+            var _this2 = this;
+
+            return React.createElement(
+                'div',
+                { className: 'clock', onClick: function onClick() {
+                        return _this2.props.removeEntry(_this2.props.id);
+                    } },
+                React.createElement(
+                    'div',
+                    { className: 'close' },
+                    'X'
+                ),
+                React.createElement(
+                    'div',
+                    { className: 'location' },
+                    'Mountain View, CA'
+                ),
+                React.createElement(
+                    'div',
+                    { className: 'timer' },
+                    new Date().toLocaleTimeString()
+                )
+            );
+        }
+    }]);
+
+    return Clock;
+}(React.Component);
+
+var Foo = function (_React$Component2) {
+    _inherits(Foo, _React$Component2);
 
     function Foo() {
         _classCallCheck(this, Foo);
@@ -57,12 +98,12 @@ var Foo = function (_React$Component) {
     _createClass(Foo, [{
         key: 'render',
         value: function render() {
-            var _this2 = this;
+            var _this4 = this;
 
             return React.createElement(
                 'div',
                 { onClick: function onClick() {
-                        return _this2.props.removeEntry(_this2.props.id);
+                        return _this4.props.removeEntry(_this4.props.id);
                     } },
                 this.props.message
             );
@@ -72,40 +113,38 @@ var Foo = function (_React$Component) {
     return Foo;
 }(React.Component);
 
-var Test = function (_React$Component2) {
-    _inherits(Test, _React$Component2);
+var Test = function (_React$Component3) {
+    _inherits(Test, _React$Component3);
 
     function Test(props) {
         _classCallCheck(this, Test);
 
-        var _this3 = _possibleConstructorReturn(this, (Test.__proto__ || Object.getPrototypeOf(Test)).call(this, props));
+        var _this5 = _possibleConstructorReturn(this, (Test.__proto__ || Object.getPrototypeOf(Test)).call(this, props));
 
-        _this3.state = {
-            entries: [{ id: 1, message: "Hi" }, { id: 2, message: "Bye" }]
-        };
-        return _this3;
+        _this5.state = { clocks: [] };
+        return _this5;
     }
 
     _createClass(Test, [{
         key: 'removeEntry',
         value: function removeEntry(id) {
-            var index = this.state.entries.findIndex(function (e) {
+            var newState = this.state.clocks;
+            var index = newState.findIndex(function (e) {
                 return e.id === id;
             });
-            var tempArray = this.state.entries;
-            tempArray.splice(index, 1);
-            this.setState({ entries: tempArray });
+            newState.splice(index, 1);
+            this.setState({ clocks: newState });
         }
     }, {
         key: 'render',
         value: function render() {
-            var _this4 = this;
+            var _this6 = this;
 
             return React.createElement(
                 'div',
                 null,
-                this.state.entries.map(function (e) {
-                    return React.createElement(Foo, { key: e.id, id: e.id, message: e.message, removeEntry: _this4.removeEntry.bind(_this4) });
+                this.state.clocks.map(function (e) {
+                    return React.createElement(Foo, { key: e.id, id: e.id, message: e.message, removeEntry: _this6.removeEntry.bind(_this6) });
                 })
             );
         }
@@ -114,13 +153,13 @@ var Test = function (_React$Component2) {
     return Test;
 }(React.Component);
 
-var click = 2;
+var idCounter = 0;
 
 var r = ReactDOM.render(React.createElement(Test, null), document.getElementById('container'));
 
 function addThing() {
-    click += 1;
-    var tempArray = r.state.entries;
-    tempArray.push({ id: click, message: "testMessage" });
-    r.setState({ entries: tempArray });
+    var newState = r.state.clocks;
+    newState.push({ id: idCounter, message: "testMessage" });
+    r.setState({ clocks: newState });
+    idCounter += 1;
 }
