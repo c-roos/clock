@@ -144,7 +144,7 @@ var Test = function (_React$Component3) {
                 'div',
                 null,
                 this.state.clocks.map(function (e) {
-                    return React.createElement(Foo, { key: e.id, id: e.id, message: e.message, removeEntry: _this6.removeEntry.bind(_this6) });
+                    return React.createElement(Clock, { key: e.id, id: e.id, removeEntry: _this6.removeEntry.bind(_this6) });
                 })
             );
         }
@@ -159,7 +159,7 @@ var r = ReactDOM.render(React.createElement(Test, null), document.getElementById
 
 function addThing() {
     var newState = r.state.clocks;
-    newState.push({ id: idCounter, message: "testMessage" });
+    newState.push({ id: idCounter });
     r.setState({ clocks: newState });
     idCounter += 1;
 }
