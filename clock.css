@@ -1,38 +1,46 @@
 #container {
-    text-align: center;
-    width: 100%;
-    padding: 20px;
+  text-align: center;
+  width: 100%;
+  padding: 20px;
+  background: #eee;
 }
 
 .clock {
-    background: #c9c9c9;
-    display: inline-block;
-    position: relative;
-    margin: 10px;
-    border-radius: 4px;
+  border: #555 solid 1px;
+  background: #ededed;
+  display: inline-block;
+  position: relative;
+  color: #222;
+  font-family: Arial, Helvetica, sans-serif;
 }
 
 .closeContainer {
-    position: relative;
+  position: relative;
 }
 
 .close {
-    position: absolute;
-    right: 0px;
-    top: 0px;
-    border-style: solid;
-    border-radius: 4px;
-    border-width: thin;
+  float: right;
+  right: 2px;
+  top: 2px;
+  color: red;
+  font-size: 4px;
+  cursor: pointer;
 }
 
 .location {
-    margin-top: 4px;
-    margin-right: 4ch;
-    margin-left: 4px;
-    font-size: 140%;
+  margin-top: 4px;
+  margin-right: 4ch;
+  margin-left: 4px;
+  font-size: 140%;
 }
 
 .timer {
-    font-size: 300%;
-    padding: 8px;
+  font-size: 2rem;
+  padding: 8px;
+}
+
+
+.card {
+  width: 16rem;
+  margin: auto;
 }

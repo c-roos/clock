@@ -9,42 +9,6 @@ function _inherits(subClass, superClass) { if (typeof superClass !== "function" 
 var key = 'AIzaSyDfg1yJ2wwN2kucPfECfwECosbpp9rHG6w';
 var geocoder;
 
-function buildClock(results, status) {
-    if (status == 'OK') {
-        var loc = results[0].geometry.location.toUrlValue();
-        console.log(loc);
-        var timestamp = Math.round(new Date().getTime() / 1000);
-        var tzcall = 'https://maps.googleapis.com/maps/api/timezone/json?location=' + loc + '&timestamp=' + timestamp + '&key=' + key;
-
-        var xhr = new XMLHttpRequest();
-        xhr.open('GET', tzcall);
-        xhr.onload = function () {
-            console.log(xhr.status);
-            if (xhr.status === 200) {
-                var tzdata = JSON.parse(xhr.responseText);
-                console.log(tzdata);
-                if (tzdata.status == 'OK') {
-                    console.log(new Date().toLocaleString());
-                    tztime = Date.now() + (tzdata.dstOffset + tzdata.rawOffset) * 1000;
-                    console.log(new Date(tztime).toString());
-                }
-            }
-        };
-        xhr.send();
-    }
-}
-
-function codeAddress(address) {
-    geocoder.geocode({ 'address': address }, buildClock);
-}
-
-function initClocks() {
-    console.log('initClocks');
-    //geocoder = new google.maps.Geocoder();
-    //codeAddress('Mountain View, CA');
-    //ReactDOM.render(<Clock />, document.getElementById('container'));
-}
-
 var Clock = function (_React$Component) {
     _inherits(Clock, _React$Component);
 
@@ -59,25 +23,39 @@ var Clock = function (_React$Component) {
         value: function render() {
             var _this2 = this;
 
+            var d = new Date(Date.now() + 1000 * this.props.offset);
+            var utcHours = d.getUTCHours();
+            var ampm = utcHours < 12 ? 'AM' : 'PM';
+            var hours = utcHours % 12 || 12;
+            var timeString = hours + ":" + ("0" + d.getUTCMinutes()).substr(-2) + " " + ampm;
             return React.createElement(
                 'div',
-                { className: 'clock', onClick: function onClick() {
-                        return _this2.props.removeEntry(_this2.props.id);
-                    } },
+                { className: 'card clock border-info mb-3' },
                 React.createElement(
                     'div',
-                    { className: 'close' },
-                    'X'
+                    { 'class': 'card-header' },
+                    React.createElement(
+                        'small',
+                        null,
+                        this.props.address
+                    ),
+                    React.createElement(
+                        'span',
+                        { className: 'close', onClick: function onClick() {
+                                return _this2.props.removeEntry(_this2.props.id);
+                            } },
+                        'X'
+                    )
                 ),
                 React.createElement(
                     'div',
-                    { className: 'location' },
-                    'Mountain View, CA'
-                ),
-                React.createElement(
-                    'div',
-                    { className: 'timer' },
-                    new Date().toLocaleTimeString()
+                    { className: 'card-body' },
+                    React.createElement(
+                        'h5',
+                        { className: 'card-title' },
+                        timeString
+                    ),
+                    React.createElement('h6', { className: 'card-subtitle mb-2 text-muted' })
                 )
             );
         }
@@ -86,43 +64,16 @@ var Clock = function (_React$Component) {
     return Clock;
 }(React.Component);
 
-var Foo = function (_React$Component2) {
-    _inherits(Foo, _React$Component2);
-
-    function Foo() {
-        _classCallCheck(this, Foo);
-
-        return _possibleConstructorReturn(this, (Foo.__proto__ || Object.getPrototypeOf(Foo)).apply(this, arguments));
-    }
-
-    _createClass(Foo, [{
-        key: 'render',
-        value: function render() {
-            var _this4 = this;
-
-            return React.createElement(
-                'div',
-                { onClick: function onClick() {
-                        return _this4.props.removeEntry(_this4.props.id);
-                    } },
-                this.props.message
-            );
-        }
-    }]);
-
-    return Foo;
-}(React.Component);
-
-var Test = function (_React$Component3) {
-    _inherits(Test, _React$Component3);
+var Test = function (_React$Component2) {
+    _inherits(Test, _React$Component2);
 
     function Test(props) {
         _classCallCheck(this, Test);
 
-        var _this5 = _possibleConstructorReturn(this, (Test.__proto__ || Object.getPrototypeOf(Test)).call(this, props));
+        var _this3 = _possibleConstructorReturn(this, (Test.__proto__ || Object.getPrototypeOf(Test)).call(this, props));
 
-        _this5.state = { clocks: [] };
-        return _this5;
+        _this3.state = { clocks: [] };
+        return _this3;
     }
 
     _createClass(Test, [{
@@ -138,13 +89,13 @@ var Test = function (_React$Component3) {
     }, {
         key: 'render',
         value: function render() {
-            var _this6 = this;
+            var _this4 = this;
 
             return React.createElement(
                 'div',
                 null,
                 this.state.clocks.map(function (e) {
-                    return React.createElement(Clock, { key: e.id, id: e.id, removeEntry: _this6.removeEntry.bind(_this6) });
+                    return React.createElement(Clock, { key: e.id, id: e.id, offset: e.offset, address: e.address, removeEntry: _this4.removeEntry.bind(_this4) });
                 })
             );
         }
@@ -154,12 +105,54 @@ var Test = function (_React$Component3) {
 }(React.Component);
 
 var idCounter = 0;
-
 var r = ReactDOM.render(React.createElement(Test, null), document.getElementById('container'));
 
-function addThing() {
-    var newState = r.state.clocks;
-    newState.push({ id: idCounter });
-    r.setState({ clocks: newState });
-    idCounter += 1;
+function buildClock(results, status) {
+    if (status == 'OK') {
+        var loc = results[0].geometry.location.toUrlValue();
+        console.log(loc);
+        var timestamp = Math.round(new Date().getTime() / 1000);
+        var tzcall = 'https://maps.googleapis.com/maps/api/timezone/json?location=' + loc + '&timestamp=' + timestamp + '&key=' + key;
+
+        var xhr = new XMLHttpRequest();
+        xhr.open('GET', tzcall);
+        xhr.onload = function () {
+            console.log(xhr.status);
+            if (xhr.status === 200) {
+                var tzdata = JSON.parse(xhr.responseText);
+                console.log(tzdata);
+                if (tzdata.status == 'OK') {
+                    var newState = r.state.clocks;
+                    newState.push({
+                        id: idCounter,
+                        offset: tzdata.dstOffset + tzdata.rawOffset,
+                        address: results[0].formatted_address
+                    });
+                    r.setState({ clocks: newState });
+                    idCounter += 1;
+                }
+            }
+        };
+        xhr.send();
+    }
 }
+
+function codeAddress(address) {
+    geocoder.geocode({ 'address': address }, buildClock);
+}
+
+function formHandler() {
+    codeAddress(document.getElementById('addressField').value);
+}
+
+function initClocks() {
+    geocoder = new google.maps.Geocoder();
+    codeAddress('Mountain View, CA');
+}
+
+//function addThing() {
+//    var newState = r.state.clocks;
+//    newState.push({id: idCounter});
+//	r.setState({clocks: newState});
+//    idCounter += 1;
+//}
