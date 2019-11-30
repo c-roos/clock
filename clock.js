@@ -35,16 +35,16 @@ var Clock = function (_React$Component) {
                     'div',
                     { className: 'card-header' },
                     React.createElement(
-                        'small',
-                        null,
-                        this.props.address
-                    ),
-                    React.createElement(
                         'span',
                         { className: 'close', onClick: function onClick() {
                                 return _this2.props.removeEntry(_this2.props.id);
                             } },
                         'X'
+                    ),
+                    React.createElement(
+                        'small',
+                        null,
+                        this.props.address
                     )
                 ),
                 React.createElement(
