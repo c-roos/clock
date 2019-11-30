@@ -33,7 +33,7 @@ var Clock = function (_React$Component) {
                 { className: 'card clock border-info mb-3' },
                 React.createElement(
                     'div',
-                    { 'class': 'card-header' },
+                    { className: 'card-header' },
                     React.createElement(
                         'small',
                         null,
