@@ -143,6 +143,7 @@ function codeAddress(address) {
 
 function formHandler() {
     codeAddress(document.getElementById('addressField').value);
+    return false;
 }
 
 function initClocks() {
