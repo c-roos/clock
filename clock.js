@@ -148,7 +148,10 @@ function formHandler() {
 
 function initClocks() {
     geocoder = new google.maps.Geocoder();
-    codeAddress('Mountain View, CA');
+    codeAddress('Chugwater Wyoming');
+    codeAddress('Concepcion, Chile');
+    codeAddress('Sydney Australia');
+    codeAddress('Asmara Eritrea');
 }
 
 //function addThing() {
