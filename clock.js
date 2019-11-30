@@ -30,7 +30,7 @@ var Clock = function (_React$Component) {
             var timeString = hours + ":" + ("0" + d.getUTCMinutes()).substr(-2) + " " + ampm;
             return React.createElement(
                 'div',
-                { className: 'card clock border-info mb-3' },
+                { className: 'card clock border-info mb-3 ml-1 mr-1' },
                 React.createElement(
                     'div',
                     { className: 'card-header' },
