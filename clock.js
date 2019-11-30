@@ -23,7 +23,7 @@ var Clock = function (_React$Component) {
         value: function render() {
             var _this2 = this;
 
-            var d = new Date(Date.now() + 1000 * this.props.offset);
+            var d = new Date(this.props.timestamp + 1000 * this.props.offset);
             var utcHours = d.getUTCHours();
             var ampm = utcHours < 12 ? 'AM' : 'PM';
             var hours = utcHours % 12 || 12;
@@ -72,7 +72,7 @@ var Test = function (_React$Component2) {
 
         var _this3 = _possibleConstructorReturn(this, (Test.__proto__ || Object.getPrototypeOf(Test)).call(this, props));
 
-        _this3.state = { clocks: [] };
+        _this3.state = { clocks: [], timestamp: Date.now() };
         return _this3;
     }
 
@@ -87,15 +87,37 @@ var Test = function (_React$Component2) {
             this.setState({ clocks: newState });
         }
     }, {
+        key: 'componentDidMount',
+        value: function componentDidMount() {
+            var _this4 = this;
+
+            this.timerID = setInterval(function () {
+                return _this4.tick();
+            }, 1000);
+        }
+    }, {
+        key: 'componentWillUnmount',
+        value: function componentWillUnmount() {
+            clearInterval(this.timerID);
+        }
+    }, {
+        key: 'tick',
+        value: function tick() {
+            this.setState({
+                clocks: this.state.clocks,
+                timestamp: Date.now()
+            });
+        }
+    }, {
         key: 'render',
         value: function render() {
-            var _this4 = this;
+            var _this5 = this;
 
             return React.createElement(
                 'div',
                 null,
                 this.state.clocks.map(function (e) {
-                    return React.createElement(Clock, { key: e.id, id: e.id, offset: e.offset, address: e.address, removeEntry: _this4.removeEntry.bind(_this4) });
+                    return React.createElement(Clock, { key: e.id, id: e.id, offset: e.offset, address: e.address, timestamp: _this5.state.timestamp, removeEntry: _this5.removeEntry.bind(_this5) });
                 })
             );
         }
@@ -122,13 +144,13 @@ function buildClock(results, status) {
                 var tzdata = JSON.parse(xhr.responseText);
                 console.log(tzdata);
                 if (tzdata.status == 'OK') {
-                    var newState = r.state.clocks;
-                    newState.push({
+                    var newClocks = r.state.clocks;
+                    newClocks.push({
                         id: idCounter,
                         offset: tzdata.dstOffset + tzdata.rawOffset,
                         address: results[0].formatted_address
                     });
-                    r.setState({ clocks: newState });
+                    r.setState({ clocks: newClocks, timestamp: Date.now() });
                     idCounter += 1;
                 }
             }
