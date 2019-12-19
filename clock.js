@@ -127,7 +127,7 @@ var ClockContainer = function (_React$Component2) {
 }(React.Component);
 
 var idCounter = 0;
-var r = ReactDOM.render(React.createElement(ClockContainer, null), document.getElementById('container'));
+var r = ReactDOM.render(React.createElement(ClockContainer, null), document.getElementById('reactContainer'));
 
 function buildClock(results, status) {
     if (status == 'OK') {

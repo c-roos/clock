@@ -2,10 +2,14 @@ body {
     background: #eee !important;
 }
 
-#container {
+#reactContainer {
   text-align: center;
   width: 100%;
   padding: 20px;
+}
+
+.container {
+    text-align: center;
 }
 
 .clock {
