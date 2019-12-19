@@ -64,19 +64,19 @@ var Clock = function (_React$Component) {
     return Clock;
 }(React.Component);
 
-var Test = function (_React$Component2) {
-    _inherits(Test, _React$Component2);
+var ClockContainer = function (_React$Component2) {
+    _inherits(ClockContainer, _React$Component2);
 
-    function Test(props) {
-        _classCallCheck(this, Test);
+    function ClockContainer(props) {
+        _classCallCheck(this, ClockContainer);
 
-        var _this3 = _possibleConstructorReturn(this, (Test.__proto__ || Object.getPrototypeOf(Test)).call(this, props));
+        var _this3 = _possibleConstructorReturn(this, (ClockContainer.__proto__ || Object.getPrototypeOf(ClockContainer)).call(this, props));
 
         _this3.state = { clocks: [], timestamp: Date.now() };
         return _this3;
     }
 
-    _createClass(Test, [{
+    _createClass(ClockContainer, [{
         key: 'removeEntry',
         value: function removeEntry(id) {
             var newState = this.state.clocks;
@@ -123,11 +123,11 @@ var Test = function (_React$Component2) {
         }
     }]);
 
-    return Test;
+    return ClockContainer;
 }(React.Component);
 
 var idCounter = 0;
-var r = ReactDOM.render(React.createElement(Test, null), document.getElementById('container'));
+var r = ReactDOM.render(React.createElement(ClockContainer, null), document.getElementById('container'));
 
 function buildClock(results, status) {
     if (status == 'OK') {
@@ -175,10 +175,3 @@ function initClocks() {
     codeAddress('Sydney Australia');
     codeAddress('Asmara Eritrea');
 }
-
-//function addThing() {
-//    var newState = r.state.clocks;
-//    newState.push({id: idCounter});
-//	r.setState({clocks: newState});
-//    idCounter += 1;
-//}
