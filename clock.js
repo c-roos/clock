@@ -132,17 +132,14 @@ var r = ReactDOM.render(React.createElement(ClockContainer, null), document.getE
 function buildClock(results, status) {
     if (status == 'OK') {
         var loc = results[0].geometry.location.toUrlValue();
-        console.log(loc);
         var timestamp = Math.round(new Date().getTime() / 1000);
         var tzcall = 'https://maps.googleapis.com/maps/api/timezone/json?location=' + loc + '&timestamp=' + timestamp + '&key=' + key;
 
         var xhr = new XMLHttpRequest();
         xhr.open('GET', tzcall);
         xhr.onload = function () {
-            console.log(xhr.status);
             if (xhr.status === 200) {
                 var tzdata = JSON.parse(xhr.responseText);
-                console.log(tzdata);
                 if (tzdata.status == 'OK') {
                     var newClocks = r.state.clocks;
                     newClocks.push({
