@@ -167,8 +167,8 @@ function formHandler() {
 
 function initClocks() {
     geocoder = new google.maps.Geocoder();
-    codeAddress('Chugwater Wyoming');
-    codeAddress('Concepcion, Chile');
+    codeAddress('New York, NY');
+    codeAddress('Tokyo Japan');
     codeAddress('Sydney Australia');
-    codeAddress('Asmara Eritrea');
+    codeAddress('London England');
 }
